@@ -1,0 +1,53 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #drawer class="sidenav" fixedInViewport
+      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+      [mode]="(isHandset$ | async) ? 'over' : 'side'"
+      [opened]="(isHandset$ | async) === false">
+    <mat-toolbar><i class="fas fa-bars"></i>&nbsp;Menu</mat-toolbar>
+    <mat-nav-list>   
+     <a *ngFor="let item of menuItems" mat-list-item [routerLink]="'/'+item.url"> <i [class]="item.icon"></i>&nbsp; {{item.menu}}</a>
+     <hr/>
+     <a mat-list-item style="font-size:small;">
+        <span style="margin-right: 20px;">
+          <i class="fas fa-temperature-low" *ngIf="mostrarIconoTemp()==0"></i>
+          <i class="fas fa-thermometer-quarter" *ngIf="mostrarIconoTemp()==1"></i>
+          <i class="fas fa-temperature-high" *ngIf="mostrarIconoTemp()==2"></i>
+        </span>
+        &nbsp;{{datosBme.temperature_C|number:'2.2'}} ºC
+     </a>
+     <br/>
+      <a mat-list-item style="font-size:small;">
+        <span style="margin-right: 20px;">
+          <i class="fas fa-cloud-sun"></i>
+        </span>
+        {{datosBme.pressure_Hg|number:'.3'}} mmHg
+      </a>  
+      <br/>      
+      <a mat-list-item style="font-size:small;">
+        <span style="margin-right: 20px;">
+          <i class="fas fa-clock"></i>
+        </span>
+        {{datosBme.fecha|date:'dd/MM/yyyy HH:mm:ss'}}
+      </a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+      <button
+        type="button"
+        aria-label="Toggle sidenav"
+        mat-icon-button
+        (click)="drawer.toggle()"
+        *ngIf="isHandset$ | async">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      <span style="margin-right: 20px;">
+        {{titulo}}
+      </span>  
+      <span style="font-size: 7px;">
+        by {{created}}
+      </span>
+    </mat-toolbar>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>
